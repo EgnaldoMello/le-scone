@@ -1,0 +1,28 @@
+//variáveis do grid
+$cols: 12;
+$gutter: 20px;
+$large: 1200px;
+$medium: 760px;
+$small: 480px;
+
+//box-sizing
+*, *::after, *::before {
+    box-sizing: border-box;
+}
+
+//mixin de media-querie
+@mixin d($size) {
+    @if $size == l {
+        @media screen and (min-width: #{$large}) {
+            @content;
+        }
+    } @else if $size == m {
+        @media screen and (min-width: #{$medium}) and (max-width: #{$large - 1}) {
+            @content;
+        } 
+    } @else if $size == s {
+        @media screen and (min-width: #{$small}) and (max-width: #{$medium - 1}) {
+            @content;
+        } 
+    }
+}
