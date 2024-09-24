@@ -26,3 +26,82 @@ $small: 480px;
         } 
     }
 }
+
+//funçaõ do grid
+@function grid($col, $offset: false) {
+    $width: $col / $cols * 100 + "%";
+    $result: calc(#{$width} - #{$gutter});
+    @if $offset == offset {
+        $gutter: $gutter / 2;
+        $result: calc(#{$width} + #{$gutter});
+    }
+    @return $result
+};
+
+//loop para gerar os grids
+@for $i from 1 through $cols {
+    .grid-#{$i} {
+        width: grid($i);
+    }
+};
+
+//mixin estrutura do grid
+@mixin grid-estrutura {
+    float: left;
+    min-height: 1px;
+    margin-left: $gutter / 2;
+    margin-right: $gutter / 2;
+    @include d(s) {
+        width: 100%;
+        float: none;
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+};
+
+//seletor de todos atributos class que começam com grid
+[class^="grid-"] {
+    @include grid-estrutura;
+};
+
+//gerando as classes offset
+@for $i from 1 through $cols {
+    .offset-#{$i} {
+        margin-left: grid($i, offset);
+        @extend %offset
+    }
+};
+
+@include d(s) {
+    %offset {
+        margin-left: 0px;
+    }
+};
+
+//mixin de clearfix
+@mixin clearfix {
+    &::after, &::before {
+        content: '';
+        display: table;
+        clear: both;
+    }
+};
+
+@mixin container {
+    max-width: $large;
+    margin: 0px auto;
+    position: relative;
+    @include d(m) {
+        max-width: $medium;
+    }
+    @include d(s) {
+        max-width: $small;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+    @include clearfix;
+};
+
+.container {
+    @include container;
+}
